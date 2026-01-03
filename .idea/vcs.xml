@@ -2,5 +2,13 @@
 <project version="4">
   <component name="VcsDirectoryMappings">
     <mapping directory="" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/recipes/core/bootloader/source" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/recipes/core/drivers/source" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/recipes/core/kernel/source" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/recipes/core/kernel/source/rmm" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/recipes/core/redoxfs/source" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/recipes/core/relibc/source" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/recipes/core/relibc/source/dlmalloc-rs" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/recipes/core/relibc/source/openlibm" vcs="Git" />
   </component>
 </project>
