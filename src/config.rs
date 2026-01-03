@@ -19,6 +19,10 @@ pub struct CookConfigOpt {
     /// whether to print verbose logs to certain commands
     /// build failure still be printed anyway
     pub verbose: Option<bool>,
+    /// whether to enable LTO
+    pub lto: Option<bool>,
+    /// PGO mode/path: "generate", "use=/path/to/data", or None
+    pub pgo: Option<String>,
 }
 
 #[derive(Debug, Default, Clone, Deserialize, PartialEq, Serialize)]
@@ -29,6 +33,8 @@ pub struct CookConfig {
     pub logs: bool,
     pub nonstop: bool,
     pub verbose: bool,
+    pub lto: bool,
+    pub pgo: Option<String>,
 }
 
 impl From<CookConfigOpt> for CookConfig {
@@ -40,6 +46,8 @@ impl From<CookConfigOpt> for CookConfig {
             logs: value.logs.unwrap(),
             nonstop: value.nonstop.unwrap(),
             verbose: value.verbose.unwrap(),
+            lto: value.lto.unwrap_or(false),
+            pgo: value.pgo,
         }
     }
 }
@@ -91,6 +99,19 @@ pub fn init_config() {
     if config.cook_opt.nonstop.is_none() {
         config.cook_opt.nonstop = Some(extract_env("COOKBOOK_NONSTOP", false));
     }
+    if config.cook_opt.lto.is_none() {
+        // Default to false unless COOKBOOK_LTO is set to true
+        config.cook_opt.lto = Some(extract_env("COOKBOOK_LTO", false));
+    }
+    if config.cook_opt.pgo.is_none() {
+        // Default to None unless COOKBOOK_PGO is set
+        if let Ok(pgo) = env::var("COOKBOOK_PGO") {
+            if !pgo.is_empty() {
+                config.cook_opt.pgo = Some(pgo);
+            }
+        }
+    }
+
     if config.mirrors.len() == 0 {
         // The GNU FTP mirror below is automatically inserted for convenience
         // You can choose other mirrors by setting it on cookbook.toml

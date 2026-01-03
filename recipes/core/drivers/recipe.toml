@@ -1,5 +1,5 @@
 [source]
-git = "https://gitlab.redox-os.org/redox-os/drivers.git"
+path = "/home/jrad/RustroverProjects/redoxos/drivers"
 
 [build]
 template = "custom"

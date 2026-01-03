@@ -103,8 +103,13 @@ export CPPFLAGS="-I${COOKBOOK_SYSROOT}/include"
 
 # 1. Compiler Flags (LTO, O3, March)
 # Base aggressive optimizations
-OPTIMIZATION_FLAGS="-O3 -flto"
-RUST_OPTIMIZATION_FLAGS="-C opt-level=3 -C lto=fat"
+OPTIMIZATION_FLAGS="-O3"
+RUST_OPTIMIZATION_FLAGS="-C opt-level=3"
+
+if [ "${COOKBOOK_LTO}" == "true" ]; then
+    OPTIMIZATION_FLAGS="${OPTIMIZATION_FLAGS} -flto"
+    RUST_OPTIMIZATION_FLAGS="${RUST_OPTIMIZATION_FLAGS} -C lto=fat"
+fi
 
 # Architecture specific extensions
 if [ "${TARGET%%-*}" == "x86_64" ]; then

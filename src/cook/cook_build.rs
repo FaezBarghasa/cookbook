@@ -357,6 +357,15 @@ pub fn build(
             if offline_mode {
                 command.env("COOKBOOK_OFFLINE", "1");
             }
+
+            let config = crate::config::get_config();
+            if config.cook.lto {
+                command.env("COOKBOOK_LTO", "true");
+            }
+            if let Some(ref pgo) = config.cook.pgo {
+                command.env("COOKBOOK_PROFILE", pgo);
+            }
+
             command
         };
 
@@ -411,7 +420,13 @@ fn build_auto_deps(
 }
 
 fn get_remote_url(name: &PackageName, ext: &str) -> String {
-    return format!("{}/{}/{}.{}", REMOTE_PKG_SOURCE, redoxer::target(), name, ext);
+    return format!(
+        "{}/{}/{}.{}",
+        REMOTE_PKG_SOURCE,
+        redoxer::target(),
+        name,
+        ext
+    );
 }
 fn get_pubkey_url() -> String {
     return format!("{}/id_ed25519.pub.toml", REMOTE_PKG_SOURCE);
